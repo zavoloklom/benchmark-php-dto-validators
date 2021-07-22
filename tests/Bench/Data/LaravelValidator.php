@@ -4,19 +4,25 @@ declare(strict_types=1);
 
 namespace App\Tests\Bench\Data;
 
+use Illuminate\Support\MessageBag;
 use Pushworld\DataTransferObject\DTOInterface;
 use Pushworld\Tools\DtoValidation\ValidatorInterface;
-use Illuminate\Support\MessageBag;
 use pushworld\ValidationTools\ValidatorFactory;
+
+use function call_user_func_array;
+use function implode;
 
 class LaravelValidator implements ValidatorInterface
 {
     /** @var MessageBag Список всех ошибок */
     private $errors;
 
+    /**
+     * @inheritDoc
+     */
     public function validateDto(DTOInterface $dto): bool
     {
-        $validator = (new ValidatorFactory())->make($dto->toArray(), $this->rules(), $this->messages());
+        $validator = (new ValidatorFactory())->make($dto->toArray(), $this->getRules());
 
         $this->errors = $validator->errors();
 
@@ -24,33 +30,45 @@ class LaravelValidator implements ValidatorInterface
     }
 
     /**
-     * @see https://laravel.com/docs/8.x/validation#available-validation-rules
+     * @inheritDoc
      */
-    public function rules(): array
+    public function getErrors(?string $attribute = null): array
     {
-        return [
-            'checkoutId' => ['integer'],
-            'completedAt' => ['integer'],
-            'completedBy' => ['string'],
-            'userUuid' => ['string', 'size:36', 'uuid'],
-            'userIp' => ['ipv4'],
-            'affectedUsers.*' => ['integer'],
-        ];
+        if ($attribute !== null) {
+            return $this->errors->get($attribute);
+        }
 
+        return $this->errors->toArray();
     }
 
-    public function messages(): array
-    {
-        return [];
-    }
-
-    public function getErrors($attribute = null): array
-    {
-        return [];
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function getErrorsSummary(): array
     {
-        return [];
+        return $this->errors->all();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getErrorsSnippet(): string
+    {
+        return implode('; ', $this->getErrorsSummary());
+    }
+
+    /**
+     * @see https://laravel.com/docs/8.x/validation#available-validation-rules
+     */
+    private function getRules(): array
+    {
+        return [
+            'checkoutId'      => ['integer'],
+            'completedAt'     => ['integer'],
+            'completedBy'     => ['string'],
+            'userUuid'        => ['string', 'uuid'],
+            'userIp'          => ['ipv4'],
+            'affectedUsers.*' => ['integer'],
+        ];
     }
 }

@@ -10,8 +10,6 @@ use App\Tests\Bench\Data\SymphonyValidator;
 use App\Tests\Bench\Data\Yii2Validator;
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
-use Pushworld\DataTransferObject\DataTransferObject;
-use yii\base\BaseObject;
 
 
 /**
@@ -64,30 +62,10 @@ class DTOValidationBench
      * @Revs(1000)
      * @Iterations(5)
      */
-    public function benchSymphonyValidatorInvalid(): void
-    {
-        $validator = new SymphonyValidator();
-        $validator->validateDto($this->invalidDTO);
-    }
-
-    /**
-     * @Revs(1000)
-     * @Iterations(5)
-     */
     public function benchLaravelValidatorValid(): void
     {
         $validator = new LaravelValidator();
         $validator->validateDto($this->validDTO);
-    }
-
-    /**
-     * @Revs(1000)
-     * @Iterations(5)
-     */
-    public function benchLaravelValidatorInvalid(): void
-    {
-        $validator = new LaravelValidator();
-        $validator->validateDto($this->invalidDTO);
     }
 
     /**
@@ -104,9 +82,62 @@ class DTOValidationBench
      * @Revs(1000)
      * @Iterations(5)
      */
+    public function benchSymphonyValidatorInvalid(): void
+    {
+        $validator = new SymphonyValidator();
+        $validator->validateDto($this->invalidDTO);
+    }
+
+    /**
+     * @Revs(1000)
+     * @Iterations(5)
+     */
+    public function benchLaravelValidatorInvalid(): void
+    {
+        $validator = new LaravelValidator();
+        $validator->validateDto($this->invalidDTO);
+    }
+
+    /**
+     * @Revs(1000)
+     * @Iterations(5)
+     */
     public function benchYii2ValidatorInvalid(): void
     {
         $validator = new Yii2Validator();
         $validator->validateDto($this->invalidDTO);
+    }
+
+    /**
+     * @Revs(1000)
+     * @Iterations(5)
+     */
+    public function benchSymphonyValidatorSnippet(): void
+    {
+        $validator = new SymphonyValidator();
+        $validator->validateDto($this->invalidDTO);
+        $validator->getErrorsSnippet();
+    }
+
+    /**
+     * @Revs(1000)
+     * @Iterations(5)
+     */
+    public function benchLaravelValidatorSnippet(): void
+    {
+        $validator = new LaravelValidator();
+        $validator->validateDto($this->invalidDTO);
+        $validator->getErrorsSnippet();
+    }
+
+    /**
+     * @Revs(1000)
+     * @Iterations(5)
+     */
+    public function benchYii2ValidatorSnippet(): void
+    {
+        $validator = new Yii2Validator();
+        $validator->validateDto($this->invalidDTO);
+        $validator->getErrorsSnippet();
     }
 }

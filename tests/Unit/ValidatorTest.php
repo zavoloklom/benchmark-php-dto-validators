@@ -4,20 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit;
 
-use app\modules\Device\DeviceService;
-use app\modules\Device\Dto\AddToPlatformSegmentDto;
-use app\modules\Device\Dto\AddToSystemSegmentDto;
-use app\modules\Device\Dto\CreateDeviceDto;
-use app\modules\Device\Dto\RemoveFromPlatformSegmentDto;
-use app\modules\Device\Dto\UpdateDeviceDto;
-use app\modules\Device\Entities\Device;
-use app\modules\Device\Repositories\InMemoryDeviceRepository;
-use app\modules\Device\Validators\CreateDeviceDtoValidator;
-use app\modules\Device\Validators\DtoValidatorFactory;
-use app\modules\Device\Validators\UpdateDeviceDtoValidator;
-use app\modules\Platform\Entities\Platform;
-use app\modules\Platform\Repositories\InMemoryPlatformRepository;
-use app\modules\SystemSegment\models\SystemSegmentNew;
 use App\Tests\Bench\Data\LaravelValidator;
 use App\Tests\Bench\Data\PushworldDTO;
 use App\Tests\Bench\Data\SymphonyValidator;
@@ -25,10 +11,7 @@ use App\Tests\Bench\Data\Yii2Validator;
 use Codeception\Test\Unit;
 use Codeception\Util\Fixtures;
 use Pushworld\DataTransferObject\DataTransferObject;
-use Pushworld\ServiceManager\Services\Dictionary\DictionaryClient;
-
 use yii\base\BaseObject;
-use function Pushworld\Utils\uuid2bin;
 
 class ValidatorTest extends Unit
 {
@@ -40,6 +23,11 @@ class ValidatorTest extends Unit
 
         $this->assertTrue($validator->validateDto(Fixtures::get('validDTO')));
         $this->assertFalse($validator->validateDto(Fixtures::get('invalidDTO')));
+
+//        var_dump($validator->getErrorsSummary());
+//        var_dump($validator->getErrors());
+//        var_dump($validator->getErrorsSnippet());
+//        exit();
     }
 
     public function testSymphonyValidator(): void
@@ -48,6 +36,11 @@ class ValidatorTest extends Unit
 
         $this->assertTrue($validator->validateDto(Fixtures::get('validDTO')));
         $this->assertFalse($validator->validateDto(Fixtures::get('invalidDTO')));
+
+//        var_dump($validator->getErrorsSummary());
+//        var_dump($validator->getErrors());
+//        var_dump($validator->getErrorsSnippet());
+//        exit();
     }
 
     public function testLaravelValidator(): void
@@ -56,6 +49,11 @@ class ValidatorTest extends Unit
 
         $this->assertTrue($validator->validateDto(Fixtures::get('validDTO')));
         $this->assertFalse($validator->validateDto(Fixtures::get('invalidDTO')));
+
+//        var_dump($validator->getErrorsSummary());
+//        var_dump($validator->getErrors());
+//        var_dump($validator->getErrorsSnippet());
+//        exit();
     }
 
     /** @inheritDoc */
@@ -70,7 +68,7 @@ class ValidatorTest extends Unit
                     'completedBy'   => 'Username',
                     'userIp'        => '185.137.232.39',
                     'userUuid'      => 'd57c8cbc-7faa-4c2f-81f0-a76ada23dbe1',
-                    'affectedUsers' => [1,2],
+                    'affectedUsers' => [1, 2],
                 ]
             )
         );
@@ -82,7 +80,7 @@ class ValidatorTest extends Unit
                     'completedAt'   => 'string',
                     'completedBy'   => 5,
                     'userIp'        => '12.11',
-                    'userUuid'      => 'failed',
+                    'userUuid'      => 3,
                     'affectedUsers' => [2, 'string'],
                 ]
             )
