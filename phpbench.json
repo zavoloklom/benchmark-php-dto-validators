@@ -1,0 +1,4 @@
+{
+  "runner.bootstrap": "./tests/Benchmarks/bootstrap.php",
+  "runner.path": "./tests/Benchmarks/"
+}

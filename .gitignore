@@ -1,0 +1,18 @@
+# IDE
+.idea
+
+# OS FILES
+Thumbs.db
+.DS_Store
+
+# COMPOSER
+composer.lock
+composer.phar
+vendor
+
+# TESTS
+.phpunit.result.cache
+tests/_output
+
+# REPROTS
+report_codeclimate.html
